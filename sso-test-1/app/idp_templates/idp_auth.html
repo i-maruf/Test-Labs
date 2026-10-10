@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if mode == 'signup' %}Create account{% else %}Sign in{% endif %} · SSO Test</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="top">
+    <span class="brand"><span class="mark">ID</span> Lab identity provider</span>
+    <span class="pill">OpenID Connect · Docker</span>
+  </header>
+  <main>
+    <section class="card">
+      <p class="eyebrow">SSO Test 1</p>
+      <h1>{% if mode == 'signup' %}Create an account{% else %}Sign in{% endif %}</h1>
+      <p class="lede">
+        This identity service runs in Docker with the app. Sign up once, then sign in with the same email and password.
+      </p>
+      {% if error %}<p class="flashes"><span class="error" style="display:block;padding:12px 14px;border-radius:10px;">{{ error }}</span></p>{% endif %}
+      <form method="post" class="idp-form">
+        <input type="hidden" name="mode" value="{{ mode }}">
+        {% if mode == 'signup' %}
+        <label>Given name <input name="given_name" autocomplete="given-name"></label>
+        <label>Family name <input name="family_name" autocomplete="family-name"></label>
+        {% endif %}
+        <label>Email <input type="email" name="email" required autocomplete="username"></label>
+        <label>Password <input type="password" name="password" required minlength="8" autocomplete="{% if mode == 'signup' %}new-password{% else %}current-password{% endif %}"></label>
+        <button class="btn primary" type="submit">
+          {% if mode == 'signup' %}Create account and continue{% else %}Sign in{% endif %}
+        </button>
+      </form>
+      <p class="lede" style="margin-top:18px;">
+        {% if mode == 'signup' %}
+          Already registered? <a href="/oidc/authorize?{{ auth_query }}&prompt=login">Sign in</a>
+        {% else %}
+          Need an account? <a href="/oidc/authorize?{{ auth_query }}&prompt=create">Create one</a>
+        {% endif %}
+      </p>
+    </section>
+  </main>
+</body>
+</html>

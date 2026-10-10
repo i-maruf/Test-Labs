@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · SSO Test 1{% endblock %}
+{% block content %}
+<section class="card">
+  <p class="eyebrow">{% if user.is_new %}New account{% else %}Signed in{% endif %}</p>
+  <h1>{{ user.name or user.email or "Microsoft user" }}</h1>
+  <p class="lede">Authenticated through the Docker identity provider. Profile is stored in Postgres.</p>
+
+  <ul class="profile">
+    <li><span>Email</span><strong>{{ user.email or "—" }}</strong></li>
+    <li><span>Given name</span><strong>{{ user.given_name or "—" }}</strong></li>
+    <li><span>Family name</span><strong>{{ user.family_name or "—" }}</strong></li>
+    <li><span>Object ID</span><strong class="mono">{{ user.oid }}</strong></li>
+    <li><span>Tenant</span><strong class="mono">{{ user.tenant_id or "—" }}</strong></li>
+    <li><span>Account type</span><strong>{{ user.account_type }}</strong></li>
+    <li><span>Local user ID</span><strong>{{ user.id }}</strong></li>
+    <li><span>Created</span><strong>{{ user.created_at }}</strong></li>
+  </ul>
+
+  <form method="post" action="{{ url_for('logout') }}">
+    <button class="btn ghost" type="submit">Sign out</button>
+  </form>
+</section>
+{% endblock %}

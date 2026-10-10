@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Sign in · SSO Test 1{% endblock %}
+{% block content %}
+<section class="card hero">
+  <p class="eyebrow">PoC Labs</p>
+  <h1>{% if uses_microsoft %}Microsoft single sign-on{% else %}Sign up and sign in{% endif %}</h1>
+  <p class="lede">
+    {% if uses_microsoft %}
+      Sign up or sign in with a Microsoft personal, work, or school account.
+      First successful Microsoft login creates a local profile; later visits reuse it.
+    {% else %}
+      Create an account or sign in through the Docker identity provider.
+      The first successful login creates an application profile in Postgres.
+    {% endif %}
+  </p>
+
+  <div class="actions">
+    <a class="btn primary" href="{{ url_for('auth_start', flow='signin') }}">
+      Sign in
+    </a>
+    <a class="btn ghost" href="{{ url_for('auth_start', flow='signup') }}">
+      Create account
+    </a>
+  </div>
+
+  <dl class="meta">
+    <div>
+      <dt>Tenant</dt>
+      <dd><code>{{ tenant }}</code></dd>
+    </div>
+    <div>
+      <dt>Redirect URI</dt>
+      <dd><code>{{ redirect_uri }}</code></dd>
+    </div>
+    <div>
+      <dt>App registration</dt>
+      <dd>
+        {% if configured %}Configured{% else %}
+          Missing
+          {% if not client_id_set %}client ID{% endif %}
+          {% if not client_id_set and not client_secret_set %}and{% endif %}
+          {% if not client_secret_set %}client secret{% endif %}
+        {% endif %}
+      </dd>
+    </div>
+  </dl>
+</section>
+{% endblock %}

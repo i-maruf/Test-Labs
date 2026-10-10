@@ -1,0 +1,13 @@
+services:
+  nginx:
+    build: .
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
+    init: true
+    ports:
+      - "127.0.0.1:19321:19321"
+      - "192.168.1.198:19321:19321"
+    tty: true
+    stdin_open: true
